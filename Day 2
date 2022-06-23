@@ -1,0 +1,156 @@
+Question 1 :
+
+Given an array arr of size n, and two intervals x and y. Find the average of elements which lies between the given intervals inclusively.
+
+Input Format
+First Parameter - number n
+
+Second Parameter - array arr of size n
+
+Third Parameter - number x
+
+Fourth Parameter - number y
+
+Output Format
+Return the decimal value
+
+Example 1:
+Input:
+    6
+    6 2 5 4 3 1
+    2
+    5
+Output:
+    3.25
+Explanation:
+    The elements between indices 2 and 5 are 5, 4, 3 and 1. The Average is: 
+         (5 + 4 + 3 + 1) / 4 = 3.25
+Example 2:
+Input:
+    2
+    7 2
+    0
+    1
+Output:
+    4.5
+Explanation:
+    The elements between indices 0 and 1 are 7 and 2. The average is:
+        (7 + 2) / 2 = 4.5
+Constraints
+0 <= n <= 104
+-104 <= arr[i] <= 104
+0 <= x <= y < n
+Expected Time Complexity: O(n)
+Expected Space Complexity: O(1)
+
+Solution :
+
+float solve(int n, vector<int> arr, int x, int y){
+    float num = 0;
+    for(int i=x;i<=y;i++){
+        num = num + arr[i];
+    }
+
+    return num/(y-x+1);
+}
+
+Question 2 :
+
+Given a string str1, Return the array containing the frequency of each character in the order of their occurrence.
+
+Input Format
+First Parameter - string str1
+
+Output Format
+Return the array.
+
+Example 1:
+Input:
+    arfardarb
+Output:
+    3 3 1 1 1
+Explanation:
+    a is repeated 3 times, followed by r which is repeated 3 times. f, d and b occurs only 1 time.    
+Constraints
+1 <= n <= 105
+String contains lowercase letters
+Expected Time Complexity: O(n)
+Expected Space Complexity: O(1)
+
+Solution :
+
+vector<int> solve(string str1){
+    int n = str1.size();
+    vector<int> ans;
+    for(int i=0;i<n;i++){
+        int count = 1;
+        for(int j=i+1;j<n and str1[i] != '(';j++){
+            if(str1[i] == str1[j]){
+                count++;
+                str1[j] = '(';
+            }
+        }
+        if(str1[i] != '('){
+            ans.push_back(count);
+        }
+        
+    }
+    return ans;
+}
+
+Question 3 :
+
+Given a Positive Integer n, return an array of string containing the palindromic string of intergers.
+
+Input Format
+First Parameter - number n
+
+Output Format
+Return the array of string.
+
+Example 1:
+Input:
+    5
+Output:
+    1
+    121
+    12321
+    1234321
+    123454321
+Explanation:
+    The size of staircase is 5. So you have to generate string of integers in such a way that it is palindromic. 
+Example 2:
+Input:
+    3
+Output:
+    1
+    121
+    12321
+Constraints
+0 < n < 10
+Expected Time Complexity: O(n)
+Expected Space Complexity: O(n)
+
+solution :
+
+#include<bits/stdc++.h>
+vector<string> solve(int n){
+    vector<string> ans;
+    string temp = "";
+    for(int i=1;i<=n;i++){
+        // Loop 1 for printing first half of palingdrome
+        for(int j=1;j<=i;j++){
+            temp = temp + to_string(j);
+        }
+
+        // Loop 2 for printing the second half of palingdrome
+        for(int j=i-1;j>0;j--){
+            temp = temp + to_string(j);
+        }
+
+        ans.push_back(temp);
+        temp = "";
+    }
+
+    return ans;
+}
