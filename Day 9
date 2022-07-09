@@ -1,0 +1,296 @@
+Question 1 : 
+
+Given an array of integers nums of size n and an integer target, return indices of the two numbers such that they add up to target.
+
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+Note: The pair of integers must be in the order of their position in the array i.e., the smaller index first then comes the larger one.
+
+Input Format
+First Parameter - number n
+
+Second Parameter - array of integers nums of size n
+
+Third Parameter - number target
+
+Output Format
+Return the pair of indices in an array.
+
+Example 1:
+Input : 
+   4
+   2 7 11 15
+   9
+Output : 
+    0 1
+Explaination : nums[0] + nums[1] == 9, return 0, 1
+Example 2:
+Input : 
+    3
+    3 2 4
+    6
+Output : 
+     1 2
+Constraints:
+2 <= N <= 105
+-109 <= arr[i] <= 109
+-2 * 109 <= target <= 2 * 109
+Only one valid answer exists.
+Expected Time complexity: O(n)
+Expected Space complexity: O(1)
+
+Answer :
+
+#include<bits/stdc++.h>
+vector<int> solve(int n, vector<int> nums, int target){
+    unordered_map<int,int> mp;
+    for(int i=0;i<n;i++){
+        mp[nums[i]] = i;    
+    }
+    vector<int> ans;
+
+    // main logic
+    for(int i=0;i<n;i++){
+        int k = target - nums[i];
+        if(mp.find(k) != mp.end() and mp[k] != i){
+            ans.push_back(i);
+            ans.push_back(mp[k]);
+            break;
+        }
+    }
+
+    return ans;
+}
+
+Question 2 : 
+You are given an array of prices where prices[i] is the price of a given stock on an ith day.
+
+You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+
+Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+
+Input Format
+First Parameter - number n
+
+Second Parameter - array of integers of size n
+
+Output Format
+Return the number.
+
+Example 1:
+Input:
+    6
+    7 1 5 3 6 4
+Output:
+    5
+Explanation:
+    Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+    Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+Example 2:
+Input:
+    5
+    7 6 4 3 1
+Output:
+    0
+Explanation:
+    In this case, no transactions are done and the max profit = 0.
+Constraints:
+1 <= prices.length <= 105
+0 <= prices[i] <= 104
+Expected Time Complexity: O(n)
+Expected Space Complexity: O(1)
+
+Answer : 
+
+int solve(int n, vector<int> arr){
+    int ans = 0;
+    int lower = arr[0];
+    
+    for(int i=1;i<n;i++){
+        if(arr[i] < lower){
+            lower = arr[i];
+        }
+        ans = max(ans,(arr[i] - lower));
+    }
+
+    return ans;
+}
+
+Question 3 : 
+
+Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers. If such an arrangement is not possible, it must rearrange it as the lowest possible order (i.e., sorted in ascending order). The replacement must be in place and use only constant extra memory.
+
+Given an array of integers nums of size n, find the next permutation.
+
+Input Format
+First Parameter - number n
+
+Second Parameter - array nums of size n
+
+Output Format
+return the array of integers.
+
+Example 1:
+Input:
+    3
+    1 2 3
+Output:
+    1 3 2
+Example 2:
+Input:
+    3
+    3 2 1
+Output:
+    1 2 3
+Example 3:
+Input:
+    3
+    1 1 5
+Output:
+    1 5 1
+Constraints:
+1 <= nums.length <= 100
+0 <= nums[i] <= 100
+Expected Time Complexity: O(n)
+Expected Space Complexity: O(1)
+
+Answer : 
+
+vector<int> solve(int n, vector<int> arr){
+    int idx;
+
+    // Finding first element from back satisfying arr[i] < arr[i+1]
+    for(int i=n-2;i>=0;i--){
+        if(arr[i] < arr[i+1]){
+            idx = i;
+            break;
+        }
+    }
+
+    // finding first element from back satisfying arr[j] > arr[idx]
+    for(int i=n-1;i>=0;i--){
+        if(arr[i] > arr[idx]){
+            swap(arr[i],arr[idx]);
+            break;
+        }
+    }
+
+    // reverse every element from [idx+1,last];
+    reverse(arr.begin()+(idx+1),arr.end());
+
+    return arr;
+}
+
+Question 4 :
+
+Given two strings s1 and s2, return true if s2 is an anagram of s1, and false otherwise.
+
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+return 1 if true or 0 if false.
+
+Input Format
+First Parameter - string s1
+
+Second Parameter - string s2
+
+Output Format
+Return the boolean.
+
+Example 1:
+Input:
+    dusty
+    study
+Output:
+    1
+Explanation:
+    s2 is anagram of s1. return 1 specifying true.
+Example 2:
+Input:
+    cat
+    rat
+Output:
+    0
+Explanation:
+    s2 had letter 'r' which is not in s1. Hence, it is not an anagram. 
+Constraints
+1 <= s1.length, s2.length <= 5 * 104
+s1 and s2 consists of lowercase English letters.
+Expected Time Complexity: O(n)
+Expected Space Complexity: O(n)
+
+Answer : 
+
+int solve(string s1, string s2){
+    if(s1.size() != s2.size()){
+        return false;
+    }
+
+    unordered_map<char,int> mp;
+    for(int i=0;i<s1.size();i++){
+        mp[s1[i]]++;
+    }
+
+    for(int i=0;i<s1.size();i++){
+        if(mp.find(s2[i]) != mp.end()){
+            if(mp[s2[i]] > 0){
+                mp[s2[i]]--;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    return true;
+}
+
+Question 5 :
+
+Given an array arr of size n sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once keeping the relative order of the element same.
+
+Input Format
+First Parameter - number n
+
+Second Parameter - array arr of size n
+
+Output Format
+Return the array.
+
+Example 1:
+Input:
+    6
+    1 1 4 4 4 7
+Output:
+    1 4 7
+Explanation:
+    1 and 4 are repeated in the original array. When you remove them, We are left with 1, 4 and 7. 
+Example 2:
+Input:
+    5
+    3 3 4 5 6
+Output:
+    3 4 5 6
+Explanation:
+    The repeating element that must be removed is 3.
+Constraints
+1 <= n <= 3 * 104
+-100 <= arr[i], key <= 100
+arr is sorted in non-decreasing order.
+Expected Time Complexity: O(n)
+Expected Space Complexity: O(n)
+
+Answer : 
+
+vector<int> solve(int n, vector<int> arr){
+    int i = 0;
+    while(i < arr.size()-1){
+        if(arr[i] == arr[i+1]){
+            arr.erase(arr.begin()+(i+1));
+        }else{
+            i++;
+        }
+    }
+    return arr;
+}
